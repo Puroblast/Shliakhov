@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -54,6 +55,12 @@ dependencies {
     implementation (libs.kotlinx.coroutines.core)
     implementation (libs.kotlinx.coroutines.android)
     // Coroutines endregion
+
+    //FastAdapter region
+    implementation(libs.com.mikepenz.fastadapter)
+    implementation(libs.fastadapter.extensions.diff)
+    implementation(libs.fastadapter.extensions.utils)
+    //FastAdapter endregion
 
     // Hilt region
     implementation(libs.hilt.android)
