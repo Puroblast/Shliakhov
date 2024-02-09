@@ -10,7 +10,8 @@ class FilmItem(
     val name : String,
     val genres : List<Genre>,
     val year : String,
-    val imageLink : String
+    val imageLink : String,
+    val isFavourite : Boolean = false
 
 ) : AbstractItem<FilmsViewHolder>() {
     override val layoutRes: Int
