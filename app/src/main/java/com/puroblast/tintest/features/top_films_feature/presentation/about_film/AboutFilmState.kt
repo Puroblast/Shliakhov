@@ -1,21 +1,21 @@
 package com.puroblast.tintest.features.top_films_feature.presentation.about_film
 
-import com.puroblast.tintest.features.top_films_feature.ui.AboutFilmUiState
-import com.puroblast.tintest.utils.AboutFilmFeedState
+import com.puroblast.tintest.features.top_films_feature.ui.views.about_film.AboutFilmUiState
+import com.puroblast.tintest.utils.AboutFilmState
 
 data class AboutFilmState(
-    val feedState: AboutFilmFeedState = AboutFilmFeedState.Loading
+    val feedState: AboutFilmState = AboutFilmState.Loading
 ) {
     fun mapToUiState() : AboutFilmUiState {
-        when(feedState) {
-            is AboutFilmFeedState.Content -> return AboutFilmUiState(
+        return when(feedState) {
+            is AboutFilmState.Content -> AboutFilmUiState(
                 feedState.film.nameRu,
                 feedState.film.description,
                 feedState.film.genres.map { it.genre }.joinToString(", "),
                 feedState.film.countries.map{it.country}.joinToString(", "),
                 feedState.film.posterUrl
             )
-            else -> return AboutFilmUiState()
+            else -> AboutFilmUiState()
         }
     }
 }

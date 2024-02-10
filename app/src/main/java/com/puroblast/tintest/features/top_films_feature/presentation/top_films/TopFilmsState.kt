@@ -1,9 +1,9 @@
 package com.puroblast.tintest.features.top_films_feature.presentation.top_films
 
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.FilmItem
-import com.puroblast.tintest.features.top_films_feature.ui.TopFilmsUiState
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.NoConnectionItem
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.ProgressBarItem
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.films.FilmItem
+import com.puroblast.tintest.features.top_films_feature.ui.views.top_films.TopFilmsUiState
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.no_connection.NoConnectionItem
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.progress_bar.ProgressBarItem
 import com.puroblast.tintest.utils.TopFilmsFeedState
 import com.puroblast.tintest.utils.FilmFilter
 

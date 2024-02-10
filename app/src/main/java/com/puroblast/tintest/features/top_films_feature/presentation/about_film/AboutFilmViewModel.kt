@@ -3,7 +3,7 @@ package com.puroblast.tintest.features.top_films_feature.presentation.about_film
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.puroblast.tintest.domain.FilmsRepository
-import com.puroblast.tintest.utils.AboutFilmFeedState
+import com.puroblast.tintest.utils.AboutFilmState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +21,7 @@ class AboutFilmViewModel @Inject constructor(
     fun loadFilm(id: String) {
         viewModelScope.launch {
             val film = filmsRepository.getFilm(id)
-            _state.value = _state.value.copy(AboutFilmFeedState.Content(film))
+            _state.value = _state.value.copy(AboutFilmState.Content(film))
         }
     }
 }

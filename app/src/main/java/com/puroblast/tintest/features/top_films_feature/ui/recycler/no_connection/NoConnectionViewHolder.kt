@@ -1,4 +1,4 @@
-package com.puroblast.tintest.features.top_films_feature.ui.recycler
+package com.puroblast.tintest.features.top_films_feature.ui.recycler.no_connection
 
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding

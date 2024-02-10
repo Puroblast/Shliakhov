@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/topFilmsScreen"
-        android:name="com.puroblast.tintest.features.top_films_feature.ui.TopFilmsFragment"
+        android:name="com.puroblast.tintest.features.top_films_feature.ui.views.top_films.TopFilmsFragment"
         android:label="fragment_top_films_screen"
         tools:layout="@layout/fragment_top_films" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFilmFragment"
-        android:name="com.puroblast.tintest.features.top_films_feature.ui.AboutFilmFragment"
+        android:name="com.puroblast.tintest.features.top_films_feature.ui.views.about_film.AboutFilmFragment"
         android:label="fragment_about_film"
         tools:layout="@layout/fragment_about_film" >
         <action

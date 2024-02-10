@@ -1,4 +1,4 @@
-package com.puroblast.tintest.features.top_films_feature.ui
+package com.puroblast.tintest.features.top_films_feature.ui.views.top_films
 
 import android.os.Bundle
 import android.view.View
@@ -21,12 +21,12 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.mikepenz.fastadapter.select.selectExtension
 import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FragmentTopFilmsBinding
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.FilmItem
 import com.puroblast.tintest.features.top_films_feature.presentation.top_films.TopFilmsViewModel
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.FilmsViewHolder
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.NoConnectionItem
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.NoConnectionViewHolder
-import com.puroblast.tintest.features.top_films_feature.ui.recycler.ProgressBarItem
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.films.FilmItem
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.films.FilmsViewHolder
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.no_connection.NoConnectionItem
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.no_connection.NoConnectionViewHolder
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.progress_bar.ProgressBarItem
 import com.puroblast.tintest.utils.FilmFilter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

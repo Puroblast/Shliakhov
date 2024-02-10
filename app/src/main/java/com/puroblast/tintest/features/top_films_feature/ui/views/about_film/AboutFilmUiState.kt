@@ -1,4 +1,4 @@
-package com.puroblast.tintest.features.top_films_feature.ui
+package com.puroblast.tintest.features.top_films_feature.ui.views.about_film
 
 data class AboutFilmUiState(
     val filmName : String = "",

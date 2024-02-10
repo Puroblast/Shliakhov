@@ -1,5 +1,3 @@
 package com.puroblast.tintest.utils
 
-class NoConnectionException : Throwable() {
-
-}
+class NoConnectionException : Throwable()

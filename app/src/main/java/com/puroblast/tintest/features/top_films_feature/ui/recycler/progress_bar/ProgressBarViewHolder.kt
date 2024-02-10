@@ -1,4 +1,4 @@
-package com.puroblast.tintest.features.top_films_feature.ui.recycler
+package com.puroblast.tintest.features.top_films_feature.ui.recycler.progress_bar
 
 import android.view.View
 import com.mikepenz.fastadapter.FastAdapter
