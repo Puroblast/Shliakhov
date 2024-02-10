@@ -2,10 +2,12 @@ package com.puroblast.tintest.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Film(
     @PrimaryKey
+    @SerializedName(value = "filmId" , alternate = ["kinopoiskId"])
     val filmId : Int,
     val nameRu : String,
     val posterUrl : String,
@@ -13,6 +15,6 @@ data class Film(
     val year : Int,
     val genres : List<Genre>,
     val countries : List<Country>,
-    val description : String,
-    val isFavourite : Boolean
+    var description : String? = null,
+    val isFavourite : Boolean = false
 )

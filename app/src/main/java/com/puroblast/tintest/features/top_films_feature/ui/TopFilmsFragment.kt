@@ -18,7 +18,8 @@ import com.mikepenz.fastadapter.select.selectExtension
 import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FragmentTopFilmsBinding
 import com.puroblast.tintest.features.top_films_feature.presentation.FilmItem
-import com.puroblast.tintest.features.top_films_feature.presentation.TopFilmsViewModel
+import com.puroblast.tintest.features.top_films_feature.presentation.top_films.TopFilmsViewModel
+import com.puroblast.tintest.utils.FilmFilter
 import com.puroblast.tintest.utils.NetworkManager.networkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -57,9 +58,10 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                filmViewModel.state.collect { filmItem ->
+                filmViewModel.state.collect { state ->
+                    val uiState = state.mapToUiState()
                     val result =
-                        FastAdapterDiffUtil.calculateDiff(filmItemAdapter.itemAdapter, filmItem)
+                        FastAdapterDiffUtil.calculateDiff(filmItemAdapter.itemAdapter, uiState.items)
                     FastAdapterDiffUtil[filmItemAdapter.itemAdapter] = result
                 }
             }
@@ -82,20 +84,11 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                         SearchView.OnQueryTextListener {
 
                         override fun onQueryTextSubmit(query: String?): Boolean {
-                            filmItemAdapter.filter(query)
-                            filmItemAdapter.itemFilter.filterPredicate =
-                                { item: FilmItem, constraint: CharSequence? ->
-                                    item.name.contains(constraint.toString(), ignoreCase = true)
-                                }
                             return true
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
-                            filmItemAdapter.filter(newText)
-                            filmItemAdapter.itemFilter.filterPredicate =
-                                { item: FilmItem, constraint: CharSequence? ->
-                                    item.name.contains(constraint.toString(), ignoreCase = true)
-                                }
+                            filmViewModel.queryChanged(newText ?: "" , FilmFilter.POPULAR)
                             return true
                         }
                     })

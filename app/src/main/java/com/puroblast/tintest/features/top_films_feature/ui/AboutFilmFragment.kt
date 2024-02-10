@@ -13,7 +13,7 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FragmentAboutFilmBinding
-import com.puroblast.tintest.features.top_films_feature.presentation.AboutFilmViewModel
+import com.puroblast.tintest.features.top_films_feature.presentation.about_film.AboutFilmViewModel
 import com.puroblast.tintest.utils.NetworkManager.networkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -56,12 +56,13 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 aboutFilmViewModel.state.collect {
-                    binding.filmName.text = it.filmName
-                    binding.filmDescription.text = it.filmDescription
-                    binding.filmGenres.text = it.filmGenres
-                    binding.filmCountries.text = it.filmCountries
+                    val uiState = it.mapToUiState()
+                    binding.filmName.text = uiState.filmName
+                    binding.filmDescription.text = uiState.filmDescription
+                    binding.filmGenres.text = uiState.filmGenres
+                    binding.filmCountries.text = uiState.filmCountries
                     val request = imageRequestBuilder
-                        .data(it.filmImageLink)
+                        .data(uiState.filmImageLink)
                         .target { drawable ->
                             binding.filmImage.background = drawable
                         }
