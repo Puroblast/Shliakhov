@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.ImageLoader
 import coil.request.ImageRequest
@@ -43,6 +44,10 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
                     imageLoader.enqueue(request)
                 }
             }
+        }
+
+        binding.toolBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
 
     }
