@@ -24,5 +24,4 @@ class FilmItem(
     override fun getViewHolder(v: View): FilmsViewHolder {
         return FilmsViewHolder(v)
     }
-
 }

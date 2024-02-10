@@ -2,7 +2,6 @@ package com.puroblast.tintest.di
 
 import com.google.gson.GsonBuilder
 import com.puroblast.tintest.domain.FilmsApi
-import com.puroblast.tintest.domain.FilmsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,10 +32,5 @@ object NetworkModule {
         }
 
         return api
-    }
-
-    @Provides
-    fun provideFilmsRepository(filmsApi: FilmsApi) : FilmsRepository {
-        return FilmsRepository(filmsApi)
     }
 }

@@ -23,8 +23,8 @@ class AboutFilmViewModel @Inject constructor(
             _state.value = AboutFilmUiState(
                 film.nameRu,
                 film.description,
-                film.genres.joinToString(",") { it.genre },
-                film.countries.joinToString(",") { it.country },
+                film.genres.joinToString(", ") { it.genre },
+                film.countries.joinToString(", ") { it.country },
                 film.posterUrl
             )
         }

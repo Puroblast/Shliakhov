@@ -6,6 +6,7 @@ import com.puroblast.tintest.domain.FilmsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +31,7 @@ class TopFilmsViewModel @Inject constructor(
                     it.nameRu,
                     it.genres,
                     it.year.toString(),
-                    it.posterUrl
+                    it.posterUrlPreview
                 )
             }
         }
