@@ -14,7 +14,6 @@ import coil.request.ImageRequest
 import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FragmentAboutFilmBinding
 import com.puroblast.tintest.features.top_films_feature.presentation.about_film.AboutFilmViewModel
-import com.puroblast.tintest.utils.NetworkManager.networkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -27,23 +26,14 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!networkAvailable(requireContext())) {
-            binding.scrollView.visibility = View.GONE
-            binding.noConnectionView.visibility = View.VISIBLE
-        } else {
-            render()
-        }
-
-        binding.repeatButton.setOnClickListener {
-            if (networkAvailable(requireContext())) {
-                binding.scrollView.visibility = View.VISIBLE
-                binding.noConnectionView.visibility = View.GONE
-                render()
-            }
-        }
+        render()
 
         binding.toolBar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.noConnectionView.repeatButton.setOnClickListener {
+            render()
         }
     }
 
@@ -57,17 +47,28 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 aboutFilmViewModel.state.collect {
                     val uiState = it.mapToUiState()
-                    binding.filmName.text = uiState.filmName
-                    binding.filmDescription.text = uiState.filmDescription
-                    binding.filmGenres.text = uiState.filmGenres
-                    binding.filmCountries.text = uiState.filmCountries
-                    val request = imageRequestBuilder
-                        .data(uiState.filmImageLink)
-                        .target { drawable ->
-                            binding.filmImage.background = drawable
-                        }
-                        .build()
-                    imageLoader.enqueue(request)
+                    binding.progressBar.progressBar.visibility = View.GONE
+                    binding.noConnectionView.noConnectionView.visibility = View.GONE
+                    if (uiState.isLoading) {
+                        binding.scrollView.visibility = View.GONE
+                        binding.progressBar.progressBar.visibility = View.VISIBLE
+                    } else if (uiState.isError) {
+                        binding.scrollView.visibility = View.GONE
+                        binding.noConnectionView.noConnectionView.visibility = View.VISIBLE
+                    } else {
+                        binding.scrollView.visibility = View.VISIBLE
+                        binding.filmName.text = uiState.filmName
+                        binding.filmDescription.text = uiState.filmDescription
+                        binding.filmGenres.text = uiState.filmGenres
+                        binding.filmCountries.text = uiState.filmCountries
+                        val request = imageRequestBuilder
+                            .data(uiState.filmImageLink)
+                            .target { drawable ->
+                                binding.filmImage.background = drawable
+                            }
+                            .build()
+                        imageLoader.enqueue(request)
+                    }
                 }
             }
         }

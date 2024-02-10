@@ -5,5 +5,7 @@ data class AboutFilmUiState(
     val filmDescription : String? = "",
     val filmGenres : String = "",
     val filmCountries : String = "",
-    val filmImageLink : String = ""
+    val filmImageLink : String = "",
+    val isError: Boolean = false,
+    val isLoading : Boolean = false
 )

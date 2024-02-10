@@ -4,7 +4,6 @@ import com.puroblast.tintest.domain.dao.FavouriteFilmsDao
 import com.puroblast.tintest.domain.model.Film
 import com.puroblast.tintest.utils.FilmFilter
 import com.puroblast.tintest.utils.MemoryStorage
-import com.puroblast.tintest.utils.NoConnectionException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 
@@ -15,9 +14,7 @@ class FilmsRepository(
 ) {
 
     fun observeFilms(query: String, filmFilter: FilmFilter): Flow<List<Film>> {
-        return runCatching {
-            filmsDao.getFavouriteFilms()
-        }.getOrThrow().mapLatest { favouriteFilms ->
+        return filmsDao.getFavouriteFilms().mapLatest { favouriteFilms ->
             getTopFilms().map { film ->
                 if (film in favouriteFilms) film.copy(isFavourite = true) else film.copy(
                     isFavourite = false
@@ -38,7 +35,9 @@ class FilmsRepository(
         val films =
             memoryStorage.getFilms()?.filter { it.filmId == id.toInt() && it.description != null }
         if (films.isNullOrEmpty()) {
-            return filmsApi.getFilm(id).also { memoryStorage.updateFilm(it) }
+            return kotlin.runCatching {
+                filmsApi.getFilm(id).also { memoryStorage.updateFilm(it) }
+            }.getOrThrow()
         } else {
             return films.first()
         }
@@ -46,6 +45,6 @@ class FilmsRepository(
 
     private suspend fun getTopFilms(): List<Film> {
         return memoryStorage.getFilms()
-            ?: filmsApi.getTopFilms().films.also { memoryStorage.setFilms(it) }
+            ?: runCatching { filmsApi.getTopFilms().films.also { memoryStorage.setFilms(it) } }.getOrThrow()
     }
 }

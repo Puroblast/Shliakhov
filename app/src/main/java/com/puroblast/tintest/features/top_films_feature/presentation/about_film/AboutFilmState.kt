@@ -6,16 +6,18 @@ import com.puroblast.tintest.utils.AboutFilmState
 data class AboutFilmState(
     val feedState: AboutFilmState = AboutFilmState.Loading
 ) {
-    fun mapToUiState() : AboutFilmUiState {
-        return when(feedState) {
+    fun mapToUiState(): AboutFilmUiState {
+        return when (feedState) {
             is AboutFilmState.Content -> AboutFilmUiState(
                 feedState.film.nameRu,
                 feedState.film.description,
                 feedState.film.genres.map { it.genre }.joinToString(", "),
-                feedState.film.countries.map{it.country}.joinToString(", "),
+                feedState.film.countries.map { it.country }.joinToString(", "),
                 feedState.film.posterUrl
             )
-            else -> AboutFilmUiState()
+
+            is AboutFilmState.Error -> AboutFilmUiState(isError = true)
+            is AboutFilmState.Loading -> AboutFilmUiState(isLoading = true)
         }
     }
 }
