@@ -21,12 +21,74 @@
             app:menu="@menu/top_bar_menu"/>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <LinearLayout
+        android:id="@+id/noConnectionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="40dp"
+        android:visibility="gone">
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_internet"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:text="@string/no_connection_error_text"
+            android:gravity="center"
+            android:layout_marginTop="8dp"/>
+        
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/repeatButton"
+            android:layout_width="124dp"
+            android:layout_height="45dp"
+            android:text="@string/repeat_error_text"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/blue"
+            app:cornerRadius="100dp"
+            android:layout_marginTop="36dp"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/filmsRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="158dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/popularButton"
+            android:textColor="@color/blue"
+            android:text="@string/popular"
+            app:cornerRadius="100dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="158dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white"
+            android:text="@string/favourites"
+            app:cornerRadius="100dp"/>
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

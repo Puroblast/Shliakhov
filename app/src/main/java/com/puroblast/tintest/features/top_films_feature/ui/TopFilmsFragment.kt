@@ -19,6 +19,7 @@ import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FragmentTopFilmsBinding
 import com.puroblast.tintest.features.top_films_feature.presentation.FilmItem
 import com.puroblast.tintest.features.top_films_feature.presentation.TopFilmsViewModel
+import com.puroblast.tintest.utils.NetworkManager.networkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,6 +32,21 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (!networkAvailable(requireContext())) {
+            binding.noConnectionView.visibility = View.VISIBLE
+        } else {
+            render()
+        }
+
+        binding.repeatButton.setOnClickListener {
+            if (networkAvailable(requireContext())) {
+                binding.noConnectionView.visibility = View.GONE
+                render()
+            }
+        }
+    }
+
+    private fun render() {
         val filmItemAdapter = FastItemAdapter<FilmItem>()
         filmItemAdapter.selectExtension {
             selectOnLongClick = true
@@ -41,9 +57,9 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                filmViewModel.state.collect {
-                    filmItem ->
-                    val result = FastAdapterDiffUtil.calculateDiff(filmItemAdapter.itemAdapter , filmItem)
+                filmViewModel.state.collect { filmItem ->
+                    val result =
+                        FastAdapterDiffUtil.calculateDiff(filmItemAdapter.itemAdapter, filmItem)
                     FastAdapterDiffUtil[filmItemAdapter.itemAdapter] = result
                 }
             }
@@ -51,41 +67,46 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
 
         filmItemAdapter.onClickListener = { view, adapter, item, position ->
             val bundle = bundleOf()
-            bundle.putString("filmId",item.id.toString())
-            findNavController().navigate(R.id.action_topFilmsScreen_to_aboutFilmFragment, bundle)
+            bundle.putString("filmId", item.id.toString())
+            findNavController().navigate(
+                R.id.action_topFilmsScreen_to_aboutFilmFragment,
+                bundle
+            )
             true
         }
 
-        binding.toolBar.setOnMenuItemClickListener {menuItem ->
-            when(menuItem.itemId) {
+        binding.toolBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.searchIcon -> {
-                    (menuItem.actionView as SearchView).setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    (menuItem.actionView as SearchView).setOnQueryTextListener(object :
+                        SearchView.OnQueryTextListener {
 
                         override fun onQueryTextSubmit(query: String?): Boolean {
                             filmItemAdapter.filter(query)
-                            filmItemAdapter.itemFilter.filterPredicate = {
-                                    item: FilmItem, constraint: CharSequence? ->
-                                item.name.contains(constraint.toString() , ignoreCase = true)
-                            }
+                            filmItemAdapter.itemFilter.filterPredicate =
+                                { item: FilmItem, constraint: CharSequence? ->
+                                    item.name.contains(constraint.toString(), ignoreCase = true)
+                                }
                             return true
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
                             filmItemAdapter.filter(newText)
-                            filmItemAdapter.itemFilter.filterPredicate = {
-                                    item: FilmItem, constraint: CharSequence? ->
-                                item.name.contains(constraint.toString() , ignoreCase = true)
-                            }
+                            filmItemAdapter.itemFilter.filterPredicate =
+                                { item: FilmItem, constraint: CharSequence? ->
+                                    item.name.contains(constraint.toString(), ignoreCase = true)
+                                }
                             return true
                         }
                     })
                     true
-                } else -> {
+                }
+
+                else -> {
                     true
                 }
             }
         }
     }
-
 
 }

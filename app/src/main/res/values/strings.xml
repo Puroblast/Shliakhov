@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">TinTest</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_connection_error_text">Произошла ошибка при загрузке данных, проверьте подключение к сети</string>
+    <string name="repeat_error_text">Повторить</string>
+    <string name="about_film_genres_text">Жанры:</string>
+    <string name="about_film_countries_text">Страны:</string>
+    <string name="popular">Популярные</string>
+    <string name="favourites">Избранное</string>
 </resources>

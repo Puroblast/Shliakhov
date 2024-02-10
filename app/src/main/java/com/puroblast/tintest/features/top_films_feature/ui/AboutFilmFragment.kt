@@ -14,6 +14,7 @@ import coil.request.ImageRequest
 import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FragmentAboutFilmBinding
 import com.puroblast.tintest.features.top_films_feature.presentation.AboutFilmViewModel
+import com.puroblast.tintest.utils.NetworkManager.networkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,11 +26,32 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (!networkAvailable(requireContext())) {
+            binding.scrollView.visibility = View.GONE
+            binding.noConnectionView.visibility = View.VISIBLE
+        } else {
+            render()
+        }
+
+        binding.repeatButton.setOnClickListener {
+            if (networkAvailable(requireContext())) {
+                binding.scrollView.visibility = View.VISIBLE
+                binding.noConnectionView.visibility = View.GONE
+                render()
+            }
+        }
+
+        binding.toolBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun render() {
         val imageLoader = ImageLoader(requireContext())
         val imageRequestBuilder = ImageRequest.Builder(requireContext())
         val filmId = requireArguments().getString("filmId")
         filmId?.let { aboutFilmViewModel.loadFilm(it) }
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -38,18 +60,15 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
                     binding.filmDescription.text = it.filmDescription
                     binding.filmGenres.text = it.filmGenres
                     binding.filmCountries.text = it.filmCountries
-                    val request = imageRequestBuilder.data(it.filmImageLink).target { drawable ->
-                        binding.filmImage.background = drawable
-                    }.build()
+                    val request = imageRequestBuilder
+                        .data(it.filmImageLink)
+                        .target { drawable ->
+                            binding.filmImage.background = drawable
+                        }
+                        .build()
                     imageLoader.enqueue(request)
                 }
             }
         }
-
-        binding.toolBar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-
     }
-
 }
