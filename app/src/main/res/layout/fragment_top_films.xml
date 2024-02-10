@@ -15,9 +15,8 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:orientation="horizontal"
-            android:minHeight="?attr/actionBarSize"
             app:title="Популярные"
             app:menu="@menu/top_bar_menu"/>
     </com.google.android.material.appbar.AppBarLayout>
@@ -27,7 +26,7 @@
         android:id="@+id/filmsRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

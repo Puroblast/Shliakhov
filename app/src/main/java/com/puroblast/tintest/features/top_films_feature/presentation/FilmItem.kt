@@ -6,7 +6,7 @@ import com.puroblast.tintest.R
 import com.puroblast.tintest.domain.model.Genre
 
 class FilmItem(
-    private val id : Int,
+    val id : Int,
     val name : String,
     val genres : List<Genre>,
     val year : String,

@@ -1,15 +1,15 @@
 package com.puroblast.tintest.features.top_films_feature.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mikepenz.fastadapter.adapters.FastItemAdapter
@@ -47,6 +47,13 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                     FastAdapterDiffUtil[filmItemAdapter.itemAdapter] = result
                 }
             }
+        }
+
+        filmItemAdapter.onClickListener = { view, adapter, item, position ->
+            val bundle = bundleOf()
+            bundle.putString("filmId",item.id.toString())
+            findNavController().navigate(R.id.action_topFilmsScreen_to_aboutFilmFragment, bundle)
+            true
         }
 
         binding.toolBar.setOnMenuItemClickListener {menuItem ->
