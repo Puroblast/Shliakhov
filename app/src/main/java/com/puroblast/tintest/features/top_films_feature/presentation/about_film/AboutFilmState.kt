@@ -11,8 +11,8 @@ data class AboutFilmState(
             is AboutFilmFeedState.Content -> return AboutFilmUiState(
                 feedState.film.nameRu,
                 feedState.film.description,
-                feedState.film.genres.joinToString(", "),
-                feedState.film.countries.joinToString(", "),
+                feedState.film.genres.map { it.genre }.joinToString(", "),
+                feedState.film.countries.map{it.country}.joinToString(", "),
                 feedState.film.posterUrl
             )
             else -> return AboutFilmUiState()

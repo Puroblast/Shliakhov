@@ -1,4 +1,4 @@
-package com.puroblast.tintest.features.top_films_feature.presentation
+package com.puroblast.tintest.features.top_films_feature.ui.recycler
 
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -8,12 +8,12 @@ import com.puroblast.tintest.databinding.FilmItemBinding
 
 class FilmsViewHolder(view: View): FastAdapter.ViewHolder<FilmItem>(view) {
 
-    private val binding by viewBinding(FilmItemBinding::bind)
+    val binding by viewBinding(FilmItemBinding::bind)
     override fun bindView(item: FilmItem, payloads: List<Any>) {
         with(binding) {
             previewImage.load(item.imageLink)
             filmName.text = item.name
-            filmGenre.text = item.genres.map { it.genre }.take(2).joinToString(",")
+            filmGenre.text = item.genres.map { it.genre }.first()
             filmYear.text = "(${item.year})"
         }
 

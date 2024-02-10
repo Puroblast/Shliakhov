@@ -1,7 +1,9 @@
 package com.puroblast.tintest.features.top_films_feature.presentation.top_films
 
-import com.puroblast.tintest.features.top_films_feature.presentation.FilmItem
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.FilmItem
 import com.puroblast.tintest.features.top_films_feature.ui.TopFilmsUiState
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.NoConnectionItem
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.ProgressBarItem
 import com.puroblast.tintest.utils.TopFilmsFeedState
 import com.puroblast.tintest.utils.FilmFilter
 
@@ -19,7 +21,10 @@ data class TopFilmsState(
                     it.year.toString(),
                     it.posterUrl ,
                     it.isFavourite) }
-            ) else -> return TopFilmsUiState(emptyList())
+            )
+            is TopFilmsFeedState.Error -> return TopFilmsUiState(errorItem = NoConnectionItem())
+            is TopFilmsFeedState.Loading -> return TopFilmsUiState(progressBarItem = ProgressBarItem())
+            else -> return TopFilmsUiState(emptyList())
         }
     }
 }

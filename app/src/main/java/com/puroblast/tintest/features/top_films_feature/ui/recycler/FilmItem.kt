@@ -1,9 +1,10 @@
-package com.puroblast.tintest.features.top_films_feature.presentation
+package com.puroblast.tintest.features.top_films_feature.ui.recycler
 
 import android.view.View
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.puroblast.tintest.R
 import com.puroblast.tintest.domain.model.Genre
+import com.puroblast.tintest.features.top_films_feature.ui.recycler.FilmsViewHolder
 
 class FilmItem(
     val id : Int,
