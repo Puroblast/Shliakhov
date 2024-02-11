@@ -35,6 +35,12 @@ class TopFilmsViewModel @Inject constructor(
         }
     }
 
+    fun deleteFavouriteFilm(film: Film) {
+        viewModelScope.launch {
+            filmsRepository.deleteFavouriteFilm(film)
+        }
+    }
+
     fun queryChanged(query: String = "") {
         loadTopFilms(query)
     }

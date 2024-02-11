@@ -43,6 +43,11 @@ class FilmsRepository(
         filmsDao.setFavouriteFilm(film)
     }
 
+    suspend fun deleteFavouriteFilm(film: Film) {
+        filmsDao.deleteFavouriteFilm(film)
+        memoryStorage.updateFilm(film.copy(isFavourite = false))
+    }
+
     fun observeDatabaseChanges(): Flow<List<Film>> {
         return filmsDao.observeFavouriteFilms()
     }

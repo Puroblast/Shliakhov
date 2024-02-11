@@ -59,6 +59,7 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
             binding.popularButton.setTextColor(requireContext().getColor(R.color.blue))
             binding.toolBar.title = requireContext().getString(R.string.favourites)
         }
+
     }
 
     private fun render() {
@@ -113,6 +114,22 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                 findNavController().navigate(
                     R.id.action_topFilmsScreen_to_aboutFilmFragment, bundle
                 )
+            }
+        })
+
+        fastAdapter.addEventHook(object : ClickEventHook<FilmItem>() {
+            override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+                return if (viewHolder is FilmsViewHolder) {
+                    viewHolder.binding.favouriteIcon
+                } else {
+                    null
+                }
+            }
+
+            override fun onClick(
+                v: View, position: Int, fastAdapter: FastAdapter<FilmItem>, item: FilmItem
+            ) {
+                filmViewModel.deleteFavouriteFilm(item.film)
             }
         })
 
