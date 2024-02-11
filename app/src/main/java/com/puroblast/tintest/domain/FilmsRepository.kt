@@ -21,7 +21,7 @@ class FilmsRepository(
                     getPopularFilms()
                 }
 
-                FilmFilter.FAVOURITE -> filmsDao.getFavouriteFilms().map { it.copy(isFavourite = true) }
+                FilmFilter.FAVOURITE -> filmsDao.getFavouriteFilms().sortedBy { it.position }.map { it.copy(isFavourite = true) }
             }
             films.filter { film -> film.nameRu.contains(query, ignoreCase = true) }
         }
@@ -43,7 +43,7 @@ class FilmsRepository(
         filmsDao.setFavouriteFilm(film)
     }
 
-    suspend fun observeDatabaseChanges(): Flow<List<Film>> {
+    fun observeDatabaseChanges(): Flow<List<Film>> {
         return filmsDao.observeFavouriteFilms()
     }
 
@@ -59,6 +59,7 @@ class FilmsRepository(
         return films.map { film ->
             if (film in favouriteFilms) film.copy(isFavourite = true) else film
         }.also {
+            it.forEachIndexed { index, film -> film.position = index }
             memoryStorage.setFilms(it)
         }
     }
