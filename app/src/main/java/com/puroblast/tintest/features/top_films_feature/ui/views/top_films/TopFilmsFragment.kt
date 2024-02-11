@@ -18,7 +18,7 @@ import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.FastItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.ClickEventHook
-import com.mikepenz.fastadapter.select.selectExtension
+import com.mikepenz.fastadapter.listeners.LongClickEventHook
 import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FragmentTopFilmsBinding
 import com.puroblast.tintest.features.top_films_feature.presentation.top_films.TopFilmsViewModel
@@ -41,21 +41,27 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
         super.onViewCreated(view, savedInstanceState)
 
         render()
+
+        binding.popularButton.setOnClickListener {
+            filmViewModel.changeFilter(FilmFilter.POPULAR)
+        }
+
+        binding.favouriteButton.setOnClickListener {
+            filmViewModel.changeFilter(FilmFilter.FAVOURITE)
+        }
     }
 
     private fun render() {
         val filmItemAdapter = FastItemAdapter<FilmItem>()
         val noConnectionItemAdapter = FastItemAdapter<NoConnectionItem>()
         val progressBarItemAdapter = FastItemAdapter<ProgressBarItem>()
-        filmItemAdapter.selectExtension {
-            selectOnLongClick = true
-        }
 
         val fastAdapter: GenericFastAdapter = FastAdapter.with(
             listOf(
                 filmItemAdapter, noConnectionItemAdapter, progressBarItemAdapter
             )
         )
+
         binding.filmsRecycler.layoutManager = LinearLayoutManager(context)
         binding.filmsRecycler.adapter = fastAdapter
 
@@ -70,14 +76,12 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                         noConnectionItemAdapter.set(listOf(uiState.errorItem))
                         progressBarItemAdapter.clear()
                     } else {
+                        progressBarItemAdapter.clear()
                         val result = FastAdapterDiffUtil.calculateDiff(
                             filmItemAdapter.itemAdapter, uiState.filmItems
                         )
                         FastAdapterDiffUtil[filmItemAdapter.itemAdapter] = result
-                        progressBarItemAdapter.clear()
                     }
-
-
                 }
             }
         }
@@ -102,6 +106,28 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
             }
         })
 
+        fastAdapter.addEventHook(object : LongClickEventHook<FilmItem>() {
+
+            override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+                return if (viewHolder is FilmsViewHolder) {
+                    viewHolder.binding.filmItem
+                } else {
+                    null
+                }
+            }
+
+            override fun onLongClick(
+                v: View,
+                position: Int,
+                fastAdapter: FastAdapter<FilmItem>,
+                item: FilmItem
+            ): Boolean {
+                filmViewModel.setFavouriteFilm(item.film)
+                return true
+            }
+
+        })
+
         fastAdapter.addEventHook(object : ClickEventHook<NoConnectionItem>() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 return if (viewHolder is NoConnectionViewHolder) {
@@ -117,7 +143,7 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                 fastAdapter: FastAdapter<NoConnectionItem>,
                 item: NoConnectionItem
             ) {
-                filmViewModel.queryChanged("", FilmFilter.POPULAR)
+                filmViewModel.queryChanged()
             }
         })
 
@@ -134,7 +160,7 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                         }
 
                         override fun onQueryTextChange(newText: String?): Boolean {
-                            filmViewModel.queryChanged(newText ?: "", FilmFilter.POPULAR)
+                            filmViewModel.queryChanged(newText ?: "")
                             return true
                         }
                     })

@@ -3,9 +3,11 @@ package com.puroblast.tintest.features.top_films_feature.ui.recycler.films
 import android.view.View
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.puroblast.tintest.R
+import com.puroblast.tintest.domain.model.Film
 import com.puroblast.tintest.domain.model.Genre
 
-class FilmItem(
+data class FilmItem(
+    val film : Film,
     val id : Int,
     val name : String,
     val genres : List<Genre>,

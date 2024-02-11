@@ -4,8 +4,9 @@ import com.puroblast.tintest.domain.dao.FavouriteFilmsDao
 import com.puroblast.tintest.domain.model.Film
 import com.puroblast.tintest.utils.FilmFilter
 import com.puroblast.tintest.utils.MemoryStorage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.withContext
 
 class FilmsRepository(
     private val filmsApi: FilmsApi,
@@ -13,29 +14,24 @@ class FilmsRepository(
     private val memoryStorage: MemoryStorage
 ) {
 
-    fun observeFilms(query: String, filmFilter: FilmFilter): Flow<List<Film>> {
-        return filmsDao.getFavouriteFilms().mapLatest { favouriteFilms ->
-            getTopFilms().map { film ->
-                if (film in favouriteFilms) film.copy(isFavourite = true) else film.copy(
-                    isFavourite = false
-                )
-            }.filter {
-                when (filmFilter) {
-                    FilmFilter.FAVOURITE -> it.isFavourite && it.nameRu.contains(query, true)
-                    FilmFilter.POPULAR -> {
-                        it.nameRu.contains(query, true)
-                    }
+    suspend fun getFilms(query: String, filmFilter: FilmFilter): List<Film> =
+        withContext(Dispatchers.IO) {
+            val films = when (filmFilter) {
+                FilmFilter.POPULAR -> {
+                    getPopularFilms()
                 }
+
+                FilmFilter.FAVOURITE -> filmsDao.getFavouriteFilms().map { it.copy(isFavourite = true) }
             }
+            films.filter { film -> film.nameRu.contains(query, ignoreCase = true) }
         }
 
-    }
 
     suspend fun getFilm(id: String): Film {
         val films =
             memoryStorage.getFilms()?.filter { it.filmId == id.toInt() && it.description != null }
         if (films.isNullOrEmpty()) {
-            return kotlin.runCatching {
+            return runCatching {
                 filmsApi.getFilm(id).also { memoryStorage.updateFilm(it) }
             }.getOrThrow()
         } else {
@@ -43,8 +39,27 @@ class FilmsRepository(
         }
     }
 
-    private suspend fun getTopFilms(): List<Film> {
-        return memoryStorage.getFilms()
-            ?: runCatching { filmsApi.getTopFilms().films.also { memoryStorage.setFilms(it) } }.getOrThrow()
+    suspend fun setFavouriteFilm(film: Film) {
+        filmsDao.setFavouriteFilm(film)
+    }
+
+    suspend fun observeDatabaseChanges(): Flow<List<Film>> {
+        return filmsDao.observeFavouriteFilms()
+    }
+
+    private suspend fun getFromRemote(): List<Film> = runCatching {
+        filmsApi.getTopFilms().films.also {
+            memoryStorage.setFilms(it)
+        }
+    }.getOrThrow()
+
+    private suspend fun getPopularFilms(): List<Film> {
+        val favouriteFilms = filmsDao.getFavouriteFilms()
+        val films = memoryStorage.getFilms() ?: getFromRemote()
+        return films.map { film ->
+            if (film in favouriteFilms) film.copy(isFavourite = true) else film
+        }.also {
+            memoryStorage.setFilms(it)
+        }
     }
 }

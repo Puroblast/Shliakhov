@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Film(
-    @PrimaryKey
     @SerializedName(value = "filmId" , alternate = ["kinopoiskId"])
+    @PrimaryKey
     val filmId : Int,
     val nameRu : String,
     val posterUrl : String,
@@ -16,5 +16,5 @@ data class Film(
     val genres : List<Genre>,
     val countries : List<Country>,
     var description : String? = null,
-    val isFavourite : Boolean = false
+    var isFavourite : Boolean = false
 )

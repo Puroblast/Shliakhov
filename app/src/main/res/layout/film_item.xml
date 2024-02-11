@@ -68,6 +68,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/favouriteIcon"
             android:layout_width="14dp"
             android:layout_height="13dp"
             android:src="@drawable/favourite_icon"

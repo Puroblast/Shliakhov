@@ -1,6 +1,7 @@
 package com.puroblast.tintest.features.top_films_feature.ui.recycler.films
 
 import android.view.View
+import androidx.core.view.isVisible
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.mikepenz.fastadapter.FastAdapter
@@ -13,8 +14,9 @@ class FilmsViewHolder(view: View): FastAdapter.ViewHolder<FilmItem>(view) {
         with(binding) {
             previewImage.load(item.imageLink)
             filmName.text = item.name
-            filmGenre.text = item.genres.map { it.genre }.first()
-            filmYear.text = "(${item.year})"
+            filmGenre.text = item.genres.map { it.genre }.first().replaceFirstChar { it.uppercaseChar() }
+            filmYear.text = " (${item.year})"
+            favouriteIcon.isVisible = item.isFavourite
         }
 
     }
@@ -24,6 +26,7 @@ class FilmsViewHolder(view: View): FastAdapter.ViewHolder<FilmItem>(view) {
             filmName.text = null
             filmGenre.text = null
             filmYear.text = null
+            favouriteIcon.isVisible = false
         }
     }
 }

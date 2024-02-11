@@ -16,8 +16,8 @@ data class AboutFilmState(
                 feedState.film.posterUrl
             )
 
-            is AboutFilmState.Error -> AboutFilmUiState(isError = true)
-            is AboutFilmState.Loading -> AboutFilmUiState(isLoading = true)
+            is AboutFilmState.Error -> AboutFilmUiState(isError = true , isLoading = false)
+            is AboutFilmState.Loading -> AboutFilmUiState(isLoading = true , isError = false)
         }
     }
 }

@@ -47,16 +47,15 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 aboutFilmViewModel.state.collect {
                     val uiState = it.mapToUiState()
-                    binding.progressBar.progressBar.visibility = View.GONE
-                    binding.noConnectionView.noConnectionView.visibility = View.GONE
                     if (uiState.isLoading) {
                         binding.scrollView.visibility = View.GONE
+                        binding.noConnectionView.noConnectionView.visibility = View.GONE
                         binding.progressBar.progressBar.visibility = View.VISIBLE
                     } else if (uiState.isError) {
+                        binding.progressBar.progressBar.visibility = View.GONE
                         binding.scrollView.visibility = View.GONE
                         binding.noConnectionView.noConnectionView.visibility = View.VISIBLE
                     } else {
-                        binding.scrollView.visibility = View.VISIBLE
                         binding.filmName.text = uiState.filmName
                         binding.filmDescription.text = uiState.filmDescription
                         binding.filmGenres.text = uiState.filmGenres
@@ -68,6 +67,9 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
                             }
                             .build()
                         imageLoader.enqueue(request)
+                        binding.progressBar.progressBar.visibility = View.GONE
+                        binding.noConnectionView.noConnectionView.visibility = View.GONE
+                        binding.scrollView.visibility = View.VISIBLE
                     }
                 }
             }

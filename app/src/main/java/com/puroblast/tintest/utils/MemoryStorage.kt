@@ -1,5 +1,6 @@
 package com.puroblast.tintest.utils
 
+import android.util.Log
 import com.puroblast.tintest.domain.model.Film
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -11,6 +12,9 @@ class MemoryStorage {
     suspend fun setFilms(topFilms: List<Film>) = mutex.withLock { value = topFilms }
 
     suspend fun updateFilm(film : Film) = mutex.withLock {
-        value?.find { it.filmId == film.filmId }?.description = film.description
+        value?.map { if (it.filmId == film.filmId) {
+            it.isFavourite = film.isFavourite
+            it.description = film.description
+        } }
     }
 }

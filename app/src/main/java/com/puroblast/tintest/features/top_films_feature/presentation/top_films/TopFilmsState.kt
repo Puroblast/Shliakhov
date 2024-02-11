@@ -12,9 +12,10 @@ data class TopFilmsState(
     val selectedFilter: FilmFilter = FilmFilter.POPULAR
 ) {
     fun mapToUiState() : TopFilmsUiState {
-        when(feedState) {
-            is TopFilmsFeedState.Content -> return TopFilmsUiState(feedState.films.map {
+        return when(feedState) {
+            is TopFilmsFeedState.Content -> TopFilmsUiState(feedState.films.map {
                 FilmItem(
+                    it,
                     it.filmId,
                     it.nameRu,
                     it.genres,
@@ -22,9 +23,9 @@ data class TopFilmsState(
                     it.posterUrl ,
                     it.isFavourite) }
             )
-            is TopFilmsFeedState.Error -> return TopFilmsUiState(errorItem = NoConnectionItem())
-            is TopFilmsFeedState.Loading -> return TopFilmsUiState(progressBarItem = ProgressBarItem())
-            else -> return TopFilmsUiState(emptyList())
+
+            is TopFilmsFeedState.Error -> TopFilmsUiState(errorItem = NoConnectionItem())
+            is TopFilmsFeedState.Loading -> TopFilmsUiState(progressBarItem = ProgressBarItem())
         }
     }
 }

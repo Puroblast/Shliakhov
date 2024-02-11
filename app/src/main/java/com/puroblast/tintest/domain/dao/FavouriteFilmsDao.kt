@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.puroblast.tintest.domain.model.Film
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -18,6 +19,9 @@ interface FavouriteFilmsDao {
     @Delete
     suspend fun deleteFavouriteFilm(film: Film)
 
-    @GET
-    fun getFavouriteFilms() : Flow<List<Film>> = flowOf(emptyList())
+    @Query("SELECT * FROM film")
+    fun getFavouriteFilms() : List<Film>
+
+    @Query("SELECT * FROM film")
+    fun observeFavouriteFilms(): Flow<List<Film>>
 }
