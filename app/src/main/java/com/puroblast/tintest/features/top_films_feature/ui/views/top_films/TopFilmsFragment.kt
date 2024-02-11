@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.button.MaterialButton
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.FastItemAdapter
@@ -36,43 +37,20 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
 
     private val binding by viewBinding(FragmentTopFilmsBinding::bind)
     private val filmViewModel by viewModels<TopFilmsViewModel>()
+    private val filmItemAdapter by lazy(LazyThreadSafetyMode.NONE) { FastItemAdapter<FilmItem>() }
+    private val noConnectionItemAdapter by lazy(LazyThreadSafetyMode.NONE) { FastItemAdapter<NoConnectionItem>() }
+    private val progressBarItemAdapter by lazy(LazyThreadSafetyMode.NONE) { FastItemAdapter<ProgressBarItem>() }
+    private val fastAdapter: GenericFastAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        FastAdapter.with(listOf(filmItemAdapter, noConnectionItemAdapter, progressBarItemAdapter))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         render()
-
-        binding.popularButton.setOnClickListener {
-            filmViewModel.changeFilter(FilmFilter.POPULAR)
-            binding.popularButton.setBackgroundColor(requireContext().getColor(R.color.selectedButton))
-            binding.popularButton.setTextColor(requireContext().getColor(R.color.white))
-            binding.favouriteButton.setBackgroundColor(requireContext().getColor(R.color.unselectedButton))
-            binding.favouriteButton.setTextColor(requireContext().getColor(R.color.blue))
-            binding.toolBar.title = requireContext().getString(R.string.popular)
-        }
-
-        binding.favouriteButton.setOnClickListener {
-            filmViewModel.changeFilter(FilmFilter.FAVOURITE)
-            binding.favouriteButton.setBackgroundColor(requireContext().getColor(R.color.selectedButton))
-            binding.favouriteButton.setTextColor(requireContext().getColor(R.color.white))
-            binding.popularButton.setBackgroundColor(requireContext().getColor(R.color.unselectedButton))
-            binding.popularButton.setTextColor(requireContext().getColor(R.color.blue))
-            binding.toolBar.title = requireContext().getString(R.string.favourites)
-        }
 
     }
 
     private fun render() {
-        val filmItemAdapter = FastItemAdapter<FilmItem>()
-        val noConnectionItemAdapter = FastItemAdapter<NoConnectionItem>()
-        val progressBarItemAdapter = FastItemAdapter<ProgressBarItem>()
-
-        val fastAdapter: GenericFastAdapter = FastAdapter.with(
-            listOf(
-                filmItemAdapter, noConnectionItemAdapter, progressBarItemAdapter
-            )
-        )
-
         binding.filmsRecycler.layoutManager = LinearLayoutManager(context)
         binding.filmsRecycler.adapter = fastAdapter
 
@@ -97,6 +75,35 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
             }
         }
 
+        initButtonClicks()
+        initAdapterClicks()
+        initMenuClicks()
+
+    }
+
+    private fun initButtonClicks() {
+
+        binding.popularButton.setOnClickListener {
+            setupSelectedScreen(
+                binding.favouriteButton,
+                binding.popularButton,
+                requireContext().getString(R.string.popular),
+                FilmFilter.POPULAR
+            )
+        }
+
+        binding.favouriteButton.setOnClickListener {
+            setupSelectedScreen(
+                binding.favouriteButton,
+                binding.popularButton,
+                requireContext().getString(R.string.favourites),
+                FilmFilter.FAVOURITE
+            )
+        }
+
+    }
+
+    private fun initAdapterClicks() {
         fastAdapter.addEventHook(object : ClickEventHook<FilmItem>() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 return if (viewHolder is FilmsViewHolder) {
@@ -144,10 +151,7 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
             }
 
             override fun onLongClick(
-                v: View,
-                position: Int,
-                fastAdapter: FastAdapter<FilmItem>,
-                item: FilmItem
+                v: View, position: Int, fastAdapter: FastAdapter<FilmItem>, item: FilmItem
             ): Boolean {
                 filmViewModel.setFavouriteFilm(item.film)
                 return true
@@ -173,9 +177,9 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                 filmViewModel.queryChanged()
             }
         })
+    }
 
-
-
+    private fun initMenuClicks() {
         binding.toolBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.searchIcon -> {
@@ -199,6 +203,24 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                 }
             }
         }
+    }
+
+    private fun setupSelectedScreen(
+        selectedButton: MaterialButton,
+        unselectedButton: MaterialButton,
+        titleName: String,
+        filter: FilmFilter
+    ) {
+        val context = requireContext()
+
+        filmViewModel.changeFilter(filter)
+        binding.toolBar.title = titleName
+
+        selectedButton.setBackgroundColor(context.getColor(R.color.selectedButton))
+        selectedButton.setTextColor(context.getColor(R.color.white))
+
+        unselectedButton.setBackgroundColor(requireContext().getColor(R.color.unselectedButton))
+        unselectedButton.setTextColor(context.getColor(R.color.blue))
     }
 
 }
