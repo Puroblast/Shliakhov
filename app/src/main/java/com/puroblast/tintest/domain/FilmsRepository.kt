@@ -49,6 +49,7 @@ class FilmsRepository(
 
     private suspend fun getFromRemote(): List<Film> = runCatching {
         filmsApi.getTopFilms().films.also {
+            it.forEachIndexed { index, film -> film.position = index }
             memoryStorage.setFilms(it)
         }
     }.getOrThrow()
@@ -59,7 +60,6 @@ class FilmsRepository(
         return films.map { film ->
             if (film in favouriteFilms) film.copy(isFavourite = true) else film
         }.also {
-            it.forEachIndexed { index, film -> film.position = index }
             memoryStorage.setFilms(it)
         }
     }

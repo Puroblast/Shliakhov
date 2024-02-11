@@ -44,10 +44,20 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
 
         binding.popularButton.setOnClickListener {
             filmViewModel.changeFilter(FilmFilter.POPULAR)
+            binding.popularButton.setBackgroundColor(requireContext().getColor(R.color.selectedButton))
+            binding.popularButton.setTextColor(requireContext().getColor(R.color.white))
+            binding.favouriteButton.setBackgroundColor(requireContext().getColor(R.color.unselectedButton))
+            binding.favouriteButton.setTextColor(requireContext().getColor(R.color.blue))
+            binding.toolBar.title = requireContext().getString(R.string.popular)
         }
 
         binding.favouriteButton.setOnClickListener {
             filmViewModel.changeFilter(FilmFilter.FAVOURITE)
+            binding.favouriteButton.setBackgroundColor(requireContext().getColor(R.color.selectedButton))
+            binding.favouriteButton.setTextColor(requireContext().getColor(R.color.white))
+            binding.popularButton.setBackgroundColor(requireContext().getColor(R.color.unselectedButton))
+            binding.popularButton.setTextColor(requireContext().getColor(R.color.blue))
+            binding.toolBar.title = requireContext().getString(R.string.favourites)
         }
     }
 

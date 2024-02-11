@@ -18,6 +18,8 @@
             android:layout_height="?attr/actionBarSize"
             android:orientation="horizontal"
             app:title="Популярные"
+            app:titleTextColor="@color/black"
+            app:titleTextAppearance="@style/titleStyle"
             app:menu="@menu/top_bar_menu"/>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,8 +45,8 @@
             android:layout_width="158dp"
             android:layout_height="60dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/popularButton"
-            android:textColor="@color/blue"
+            android:backgroundTint="@color/selectedButton"
+            android:textColor="@color/white"
             android:text="@string/popular"
             app:cornerRadius="100dp"/>
 
@@ -52,8 +54,8 @@
             android:id="@+id/favouriteButton"
             android:layout_width="158dp"
             android:layout_height="60dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/white"
+            android:backgroundTint="@color/unselectedButton"
+            android:textColor="@color/blue"
             android:text="@string/favourites"
             app:cornerRadius="100dp"/>
     </LinearLayout>

@@ -7,5 +7,5 @@ import com.puroblast.tintest.features.top_films_feature.ui.recycler.progress_bar
 data class TopFilmsUiState(
     val filmItems : List<FilmItem> = emptyList(),
     val errorItem : NoConnectionItem? = null,
-    val progressBarItem : ProgressBarItem? = null
+    val progressBarItem : ProgressBarItem? = null,
 )

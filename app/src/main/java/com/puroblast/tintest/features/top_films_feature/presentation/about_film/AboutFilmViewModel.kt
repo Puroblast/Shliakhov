@@ -23,10 +23,10 @@ class AboutFilmViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val film = filmsRepository.getFilm(id)
-                _state.value = _state.value.copy(feedState = AboutFilmState.Content(film))
+                _state.value = _state.value.copy(aboutFilmState = AboutFilmState.Content(film))
             } catch (e: Exception) {
                 _state.value = _state.value.copy(
-                    feedState = AboutFilmState.Error(
+                    aboutFilmState = AboutFilmState.Error(
                         NoConnectionException()
                     )
                 )

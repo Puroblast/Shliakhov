@@ -5,9 +5,10 @@ import androidx.core.view.isVisible
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.mikepenz.fastadapter.FastAdapter
+import com.puroblast.tintest.R
 import com.puroblast.tintest.databinding.FilmItemBinding
 
-class FilmsViewHolder(view: View): FastAdapter.ViewHolder<FilmItem>(view) {
+class FilmsViewHolder(val view: View): FastAdapter.ViewHolder<FilmItem>(view) {
 
     val binding by viewBinding(FilmItemBinding::bind)
     override fun bindView(item: FilmItem, payloads: List<Any>) {
@@ -15,7 +16,7 @@ class FilmsViewHolder(view: View): FastAdapter.ViewHolder<FilmItem>(view) {
             previewImage.load(item.imageLink)
             filmName.text = item.name
             filmGenre.text = item.genres.map { it.genre }.first().replaceFirstChar { it.uppercaseChar() }
-            filmYear.text = " (${item.year})"
+            filmYear.text = view.context.getString(R.string.year , item.year)
             favouriteIcon.isVisible = item.isFavourite
         }
 
