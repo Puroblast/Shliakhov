@@ -18,6 +18,7 @@ kotlinxCoroutinesAndroid = "1.7.3"
 kotlinxCoroutinesCore = "1.7.3"
 lifecycle-viewmodel-ktx = "2.7.0"
 material = "1.11.0"
+mikepenzFastadapter = "5.7.0"
 minSdk = "24"
 navigation-fragment-ktx = "2.7.7"
 retrofit = "2.9.0"
@@ -44,7 +45,10 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-runtime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+com-mikepenz-fastadapter = { module = "com.mikepenz:fastadapter", version.ref = "mikepenzFastadapter" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+fastadapter-extensions-diff = { module = "com.mikepenz:fastadapter-extensions-diff", version.ref = "mikepenzFastadapter" }
+fastadapter-extensions-utils = { module = "com.mikepenz:fastadapter-extensions-utils", version.ref = "mikepenzFastadapter" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android-compiler" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android-compiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

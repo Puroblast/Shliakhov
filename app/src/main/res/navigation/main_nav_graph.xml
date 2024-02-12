@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/topFilmsScreen">
+
+    <fragment
+        android:id="@+id/topFilmsScreen"
+        android:name="com.puroblast.tintest.features.top_films_feature.ui.views.top_films.TopFilmsFragment"
+        android:label="fragment_top_films_screen"
+        tools:layout="@layout/fragment_top_films" >
+        <action
+            android:id="@+id/action_topFilmsScreen_to_aboutFilmFragment"
+            app:destination="@id/aboutFilmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFilmFragment"
+        android:name="com.puroblast.tintest.features.top_films_feature.ui.views.about_film.AboutFilmFragment"
+        android:label="fragment_about_film"
+        tools:layout="@layout/fragment_about_film" >
+        <action
+            android:id="@+id/action_aboutFilmFragment_to_topFilmsScreen"
+            app:destination="@id/topFilmsScreen" />
+    </fragment>
+</navigation>
