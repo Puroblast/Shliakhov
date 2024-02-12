@@ -27,17 +27,21 @@ class FilmsRepository(
         }
 
 
-    suspend fun getFilm(id: String): Film {
-        val films =
-            memoryStorage.getFilms()?.filter { it.filmId == id.toInt() && it.description != null }
-        if (films.isNullOrEmpty()) {
-            return runCatching {
-                filmsApi.getFilm(id).also { memoryStorage.updateFilm(it) }
-            }.getOrThrow()
-        } else {
-            return films.first()
+    suspend fun getFilm(id: String): Film =
+        withContext(Dispatchers.IO) {
+            val favouriteFilm = filmsDao.getFavouriteFilms().find{it.filmId == id.toInt()}
+            val films =
+                memoryStorage.getFilms()?.filter { it.filmId == id.toInt() && it.description != null }
+            if (films.isNullOrEmpty()) {
+                runCatching {
+                    filmsApi.getFilm(id).also { if (favouriteFilm?.filmId == it.filmId) {
+                        memoryStorage.updateFilm(it.copy(isFavourite = true))
+                    } else memoryStorage.updateFilm(it) } }.getOrThrow()
+            } else {
+                films.first()
+            }
         }
-    }
+
 
     suspend fun setFavouriteFilm(film: Film) {
         filmsDao.setFavouriteFilm(film)

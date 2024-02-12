@@ -65,11 +65,11 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                         noConnectionItemAdapter.set(listOf(uiState.errorItem))
                         progressBarItemAdapter.clear()
                     } else {
-                        progressBarItemAdapter.clear()
                         val result = FastAdapterDiffUtil.calculateDiff(
                             filmItemAdapter.itemAdapter, uiState.filmItems
                         )
                         FastAdapterDiffUtil[filmItemAdapter.itemAdapter] = result
+                        progressBarItemAdapter.clear()
                     }
                 }
             }
