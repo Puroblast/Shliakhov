@@ -77,6 +77,6 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
     }
 
     companion object {
-        const val FILM_ID = "FILM_ID"
+        const val FILM_ID = "filmId"
     }
 }
