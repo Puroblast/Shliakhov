@@ -6,9 +6,11 @@
     android:layout_height="93dp"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="13dp"
+    app:cardPreventCornerOverlap="true"
+    style="?attr/materialCardViewElevatedStyle"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="15dp"
-    app:cardElevation="4dp">
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

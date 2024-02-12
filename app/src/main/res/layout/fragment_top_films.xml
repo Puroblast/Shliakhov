@@ -36,14 +36,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:gravity="center_horizontal"
+        android:gravity="bottom"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/popularButton"
-            android:layout_width="158dp"
-            android:layout_height="60dp"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/selectedButton"
             android:textColor="@color/white"
@@ -52,8 +53,9 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/favouriteButton"
-            android:layout_width="158dp"
-            android:layout_height="60dp"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
             android:backgroundTint="@color/unselectedButton"
             android:textColor="@color/blue"
             android:text="@string/favourites"

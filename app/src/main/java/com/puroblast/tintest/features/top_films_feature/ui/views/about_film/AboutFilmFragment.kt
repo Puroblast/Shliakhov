@@ -40,7 +40,7 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
     private fun render() {
         val imageLoader = ImageLoader(requireContext())
         val imageRequestBuilder = ImageRequest.Builder(requireContext())
-        val filmId = requireArguments().getString("filmId")
+        val filmId = requireArguments().getString(FILM_ID)
         filmId?.let { aboutFilmViewModel.loadFilm(it) }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -74,5 +74,9 @@ class AboutFilmFragment : Fragment(R.layout.fragment_about_film) {
                 }
             }
         }
+    }
+
+    companion object {
+        const val FILM_ID = "FILM_ID"
     }
 }
