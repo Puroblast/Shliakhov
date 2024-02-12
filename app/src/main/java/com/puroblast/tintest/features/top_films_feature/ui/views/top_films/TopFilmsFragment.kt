@@ -85,8 +85,8 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
 
         binding.popularButton.setOnClickListener {
             setupSelectedScreen(
-                binding.favouriteButton,
                 binding.popularButton,
+                binding.favouriteButton,
                 requireContext().getString(R.string.popular),
                 FilmFilter.POPULAR
             )
