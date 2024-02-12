@@ -58,6 +58,21 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 filmViewModel.state.collect { state ->
                     val uiState = state.mapToUiState()
+                    val context = requireContext()
+                    if (state.selectedFilter == FilmFilter.POPULAR) {
+                        setupSelectedScreen(
+                            binding.popularButton,
+                            binding.favouriteButton,
+                            context.getString(R.string.popular)
+                        )
+                    } else {
+                        setupSelectedScreen(
+                            binding.favouriteButton,
+                            binding.popularButton,
+                            context.getString(R.string.favourites)
+                        )
+                    }
+
                     if (uiState.progressBarItem != null) {
                         progressBarItemAdapter.set(listOf(uiState.progressBarItem))
                         noConnectionItemAdapter.clear()
@@ -86,20 +101,20 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
     private fun initButtonClicks() {
 
         binding.popularButton.setOnClickListener {
+            filmViewModel.changeFilter(FilmFilter.POPULAR)
             setupSelectedScreen(
                 binding.popularButton,
                 binding.favouriteButton,
                 requireContext().getString(R.string.popular),
-                FilmFilter.POPULAR
             )
         }
 
         binding.favouriteButton.setOnClickListener {
+            filmViewModel.changeFilter(FilmFilter.FAVOURITE)
             setupSelectedScreen(
                 binding.favouriteButton,
                 binding.popularButton,
-                requireContext().getString(R.string.favourites),
-                FilmFilter.FAVOURITE
+                requireContext().getString(R.string.favourites)
             )
         }
 
@@ -210,12 +225,10 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
     private fun setupSelectedScreen(
         selectedButton: MaterialButton,
         unselectedButton: MaterialButton,
-        titleName: String,
-        filter: FilmFilter
+        titleName: String
     ) {
         val context = requireContext()
 
-        filmViewModel.changeFilter(filter)
         binding.toolBar.title = titleName
 
         selectedButton.setBackgroundColor(context.getColor(R.color.selectedButton))

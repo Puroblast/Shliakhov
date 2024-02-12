@@ -21,7 +21,8 @@ class FilmsRepository(
                     getPopularFilms()
                 }
 
-                FilmFilter.FAVOURITE -> filmsDao.getFavouriteFilms().sortedBy { it.position }.map { it.copy(isFavourite = true) }
+                FilmFilter.FAVOURITE -> filmsDao.getFavouriteFilms().sortedBy { it.position }
+                    .map { it.copy(isFavourite = true) }
             }
             films.filter { film -> film.nameRu.contains(query, ignoreCase = true) }
         }
@@ -29,14 +30,18 @@ class FilmsRepository(
 
     suspend fun getFilm(id: String): Film =
         withContext(Dispatchers.IO) {
-            val favouriteFilm = filmsDao.getFavouriteFilms().find{it.filmId == id.toInt()}
+            val favouriteFilm = filmsDao.getFavouriteFilms().find { it.filmId == id.toInt() }
             val films =
-                memoryStorage.getFilms()?.filter { it.filmId == id.toInt() && it.description != null }
+                memoryStorage.getFilms()
+                    ?.filter { it.filmId == id.toInt() && it.description != null }
             if (films.isNullOrEmpty()) {
                 runCatching {
-                    filmsApi.getFilm(id).also { if (favouriteFilm?.filmId == it.filmId) {
-                        memoryStorage.updateFilm(it.copy(isFavourite = true))
-                    } else memoryStorage.updateFilm(it) } }.getOrThrow()
+                    filmsApi.getFilm(id).also {
+                        if (favouriteFilm?.filmId == it.filmId) {
+                            memoryStorage.updateFilm(it.copy(isFavourite = true))
+                        } else memoryStorage.updateFilm(it)
+                    }
+                }.getOrThrow()
             } else {
                 films.first()
             }
