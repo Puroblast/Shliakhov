@@ -70,6 +70,7 @@ class TopFilmsFragment : Fragment(R.layout.fragment_top_films) {
                         )
                         FastAdapterDiffUtil[filmItemAdapter.itemAdapter] = result
                         progressBarItemAdapter.clear()
+                        noConnectionItemAdapter.clear()
                     }
                 }
             }

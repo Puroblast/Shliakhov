@@ -9,6 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,11 +27,18 @@ class AboutFilmViewModel @Inject constructor(
                 val film = filmsRepository.getFilm(id)
                 _state.value = _state.value.copy(aboutFilmState = AboutFilmState.Content(film))
             } catch (e: Exception) {
-                _state.value = _state.value.copy(
-                    aboutFilmState = AboutFilmState.Error(
-                        NoConnectionException()
+                if (e is HttpException || e is IOException) {
+                    _state.value = _state.value.copy(
+                        aboutFilmState = AboutFilmState.Error(
+                            NoConnectionException()
+                        )
                     )
-                )
+                } else {
+                    _state.value = _state.value.copy(
+                        aboutFilmState = AboutFilmState.Error(e)
+                    )
+                }
+
             }
 
         }
